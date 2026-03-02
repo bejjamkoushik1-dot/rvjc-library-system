@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlaceHub Login</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  padding-bottom:60px;
+  background:url('https://rvrjcce.ac.in/ximages1/RVR.jpg') no-repeat center top/cover;
+}
+
+/* Glass Card */
+.login-container{
+  width:370px;
+  padding:35px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,0.3);
+  box-shadow:0 15px 40px rgba(0,0,0,0.4);
+  text-align:center;
+  color:white;
+}
+
+h2{
+  margin-bottom:20px;
+  letter-spacing:1px;
+}
+
+.input-field, .role-select{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:10px;
+  border:none;
+  outline:none;
+  font-size:14px;
+  background:rgba(255,255,255,0.9);
+}
+
+/* Focus effect */
+.input-field:focus, .role-select:focus{
+  box-shadow:0 0 5px #2563eb;
+}
+
+/* Password container */
+.password-box{
+  position:relative;
+}
+
+.toggle-password{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  cursor:pointer;
+  font-size:14px;
+  color:#333;
+}
+
+/* Options */
+.options{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  margin-top:5px;
+}
+
+.options a{
+  color:#fff;
+  text-decoration:none;
+}
+
+/* Button */
+.login-btn{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.login-btn:hover{
+  background:#1d4ed8;
+  transform:scale(1.03);
+}
+
+.footer-text{
+  margin-top:15px;
+  font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<form class="login-container">
+
+  <h2>PLACEHUB</h2>
+
+  <select class="role-select" required>
+    <option value="" disabled selected>Select Role</option>
+    <option>Student</option>
+    <option>Faculty</option>
+    <option>Senior</option>
+    <option>Admin</option>
+  </select>
+
+  <input type="text" class="input-field" placeholder="Username" required>
+
+  <div class="password-box">
+    <input type="password" class="input-field" id="password" placeholder="Password" required>
+    <span class="toggle-password" onclick="togglePassword()">👁</span>
+  </div>
+
+  <div class="options">
+    <label><input type="checkbox"> Remember</label>
+    <a href="#">Forgot?</a>
+  </div>
+
+  <button type="submit" class="login-btn">Login</button>
+
+  <p class="footer-text">© 2026 Placement Portal</p>
+
+</form>
+
+<script>
+function togglePassword(){
+  let pass = document.getElementById("password");
+  pass.type = pass.type === "password" ? "text" : "password";
+}
+</script>
+
+</body>
+</html>
