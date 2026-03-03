@@ -90,17 +90,12 @@ app.post('/api/signup', (req, res) => {
   return res.json({ success: true, email, isAdmin });
 });
 
-// Admin signup with registration code
+// Admin signup - no approval required
 app.post('/api/admin-signup', (req, res) => {
-  const { email, password, name, adminCode } = req.body || {};
-  const ADMIN_REGISTRATION_CODE = 'ADMIN2024'; // Change this in production
+  const { email, password, name } = req.body || {};
   
   if (!email || !password || !name) {
     return res.status(400).json({ error: 'Email, password, and name are required.' });
-  }
-  
-  if (!adminCode || adminCode !== ADMIN_REGISTRATION_CODE) {
-    return res.status(403).json({ error: 'Invalid admin registration code.' });
   }
   
   if (password.length < 6) {
