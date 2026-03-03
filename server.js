@@ -10,9 +10,20 @@ const { sendPasswordReset } = require(path.join(__dirname, 'lib', 'mail'));
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Database
-const dbPath = path.join(__dirname, 'data', 'library.db');
-const db = new Database(dbPath);
+// Database - use /tmp for Vercel serverless, local path for development
+const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+const dbPath = isVercel 
+  ? path.join('/tmp', 'library.db')
+  : path.join(__dirname, 'data', 'library.db');
+
+let db;
+try {
+  db = new Database(dbPath);
+  console.log('Database connected:', dbPath);
+} catch (e) {
+  console.error('Database connection failed:', e.message);
+  // Create a fallback or continue without database for static serving
+}
 
 // Middleware
 app.use(express.json());
