@@ -72,12 +72,10 @@ try {
   db.exec('ALTER TABLE users ADD COLUMN password_reset_expires DATETIME');
 } catch (e) { /* exists */ }
 
-// Seed demo admin user
-const demoHash = bcrypt.hashSync('demo123', 10);
-db.prepare(`
-  INSERT OR IGNORE INTO users (email, password_hash, name, is_admin, verified) VALUES (?, ?, ?, 1, 1)
-`).run('demo@library.com', demoHash, 'Demo User');
-db.prepare('UPDATE users SET is_admin = 1, verified = 1 WHERE email = ?').run('demo@library.com');
+// Ensure there is no hard-coded demo admin account
+try {
+  db.prepare('DELETE FROM users WHERE email = ?').run('demo@library.com');
+} catch (e) { /* ignore */ }
 
 // Seed books for R.V.R & J.C College of Engineering Library
 const books = [

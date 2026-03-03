@@ -34,12 +34,6 @@ A comprehensive library management system with user authentication, book reserva
    - **Admin Dashboard**: http://localhost:3000/admin-home
    - **User Registration**: http://localhost:3000/signup
 
-## Default Credentials
-
-- **Admin**: admin@rvrjc.edu / admin123
-- **Test User**: test@example.com / testpassword123
-- **Admin Registration Code**: ADMIN2024
-
 ## Security Features
 
 - ✅ Security question verification for password reset

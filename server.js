@@ -10,19 +10,28 @@ const { sendPasswordReset } = require(path.join(__dirname, 'lib', 'mail'));
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Database - use /tmp for Vercel serverless, local path for development
-const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
-const dbPath = isVercel 
-  ? path.join('/tmp', 'library.db')
-  : path.join(__dirname, 'data', 'library.db');
-
+// Database - handle both local and Vercel environments
 let db;
+let dbInitialized = false;
+
 try {
+  const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+  const dbPath = isVercel 
+    ? '/tmp/library.db'
+    : path.join(__dirname, 'data', 'library.db');
+  
   db = new Database(dbPath);
+  dbInitialized = true;
   console.log('Database connected:', dbPath);
+
+  // Ensure there is no hard-coded demo admin account
+  try {
+    db.prepare('DELETE FROM users WHERE email = ?').run('demo@library.com');
+  } catch (e2) { /* ignore */ }
 } catch (e) {
-  console.error('Database connection failed:', e.message);
-  // Create a fallback or continue without database for static serving
+  console.error('Database error (continuing without DB):', e.message);
+  // Create mock db for static file serving
+  db = null;
 }
 
 // Middleware
