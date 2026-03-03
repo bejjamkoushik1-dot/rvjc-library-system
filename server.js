@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const Database = require('better-sqlite3');
-const { sendPasswordReset } = require('./lib/mail');
+const { sendPasswordReset } = require(path.join(__dirname, 'lib', 'mail'));
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -518,7 +518,14 @@ app.patch('/api/admin/reservations/:id', requireAdmin, (req, res) => {
 });
 
 const HOST = process.env.HOST || '0.0.0.0';
-app.listen(PORT, HOST, () => {
-  console.log('Library server running at http://localhost:' + PORT);
-  if (HOST === '0.0.0.0') console.log('To open from other devices, use http://<this-pc-ip>:' + PORT + ' (e.g. http://192.168.1.5:' + PORT + ')');
-});
+
+// Only start server if not running on Vercel (local development)
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, HOST, () => {
+    console.log('Library server running at http://localhost:' + PORT);
+    if (HOST === '0.0.0.0') console.log('To open from other devices, use http://<this-pc-ip>:' + PORT + ' (e.g. http://192.168.1.5:' + PORT + ')');
+  });
+}
+
+// Export for Vercel serverless functions
+module.exports = app;

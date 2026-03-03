@@ -1,6 +1,6 @@
 # Library Management System
 
-A full-fledged library website with **database connection**, **book list**, **reservations**, **user login/signup**, and **e-books**.
+A comprehensive library management system with user authentication, book reservations, and admin panel.
 
 ## Features
 
@@ -77,39 +77,49 @@ NEW/
 │   └── mail.js         # Email functionality
 └── data/                # Database files
     └── library.db       # SQLite database
-│   ├── login.html
-│   ├── signup.html
-│   ├── books.html          # Book list
-│   ├── reserve.html        # Reserve a book
-│   ├── my-reservations.html
-│   ├── ebooks.html         # E-books list
-│   ├── ebook-viewer.html   # Read one e-book
-│   └── admin.html          # Admin panel (manage books, users, reservations)
-├── scripts/
-│   └── init-db.js          # Create DB and seed data
-├── server.js
-└── package.json
 ```
 
-## Database
+## Configuration
 
-- **users**: id, email, password_hash, name, created_at  
-- **books**: id, title, author, isbn, description, cover_url, ebook_path, quantity  
-- **reservations**: id, user_id, book_id, status, reserved_at, due_date, returned_at  
+Copy `.env.example` to `.env` and configure:
 
-Reservations use a 14-day due date. Run `npm run init-db` only once to create tables; re-running will add the demo user if missing and skip re-seeding books.
+- **PORT**: Server port (default: 3000)
+- **BASE_URL**: Base URL for password reset links
+- **SMTP_***: Email configuration (optional)
 
-## Connect to GitHub and run
+## Deployment
 
-1. Install [Git](https://git-scm.com/downloads) if needed.
-2. Create a new repository on [GitHub](https://github.com/new) (no README or .gitignore).
-3. In the project folder run:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit: Library Management System"
-   git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-   git push -u origin main
-   ```
-4. To run the app: `npm start` then open **http://localhost:3000**.
+This application can be deployed to any Node.js hosting platform:
+
+### Popular Options:
+- **Vercel**: Free tier with automatic deployments
+- **Netlify**: Free static hosting (limited for Node.js)
+- **DigitalOcean**: Paid VPS with full control
+- **Heroku**: Paid Node.js hosting
+
+### Environment Variables for Production:
+```bash
+NODE_ENV=production
+PORT=3000
+BASE_URL=https://your-domain.com
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+```
+
+## License
+
+MIT License - Free to use and modify
+
+## Contributing
+
+1. Fork repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+---
+
+**R.V.R & J.C College of Engineering Library Management System**  
+*Built with ❤️ for educational institutions*
