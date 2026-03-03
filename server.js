@@ -14,25 +14,77 @@ const PORT = process.env.PORT || 3000;
 let db;
 let dbInitialized = false;
 
-try {
-  const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
-  const dbPath = isVercel 
-    ? '/tmp/library.db'
-    : path.join(__dirname, 'data', 'library.db');
-  
-  db = new Database(dbPath);
-  dbInitialized = true;
-  console.log('Database connected:', dbPath);
-
-  // Ensure there is no hard-coded demo admin account
+// Initialize database function
+function initializeDatabase() {
   try {
-    db.prepare('DELETE FROM users WHERE email = ?').run('demo@library.com');
-  } catch (e2) { /* ignore */ }
-} catch (e) {
-  console.error('Database error (continuing without DB):', e.message);
-  // Create mock db for static file serving
-  db = null;
+    const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+    const dbPath = isVercel 
+      ? '/tmp/library.db'
+      : path.join(__dirname, 'data', 'library.db');
+    
+    db = new Database(dbPath);
+    dbInitialized = true;
+    
+    // Create tables if they don't exist
+    db.prepare(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        name TEXT NOT NULL,
+        verified INTEGER DEFAULT 0,
+        is_admin INTEGER DEFAULT 0,
+        security_question TEXT,
+        security_answer TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    `).run();
+    
+    db.prepare(`
+      CREATE TABLE IF NOT EXISTS books (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        author TEXT NOT NULL,
+        isbn TEXT UNIQUE,
+        genre TEXT,
+        description TEXT,
+        total_copies INTEGER DEFAULT 1,
+        available_copies INTEGER DEFAULT 1,
+        cover_image TEXT,
+        ebook_path TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    `).run();
+    
+    db.prepare(`
+      CREATE TABLE IF NOT EXISTS reservations (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        book_id INTEGER NOT NULL,
+        reserved_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        due_date DATETIME,
+        returned_at DATETIME,
+        status TEXT DEFAULT 'active',
+        FOREIGN KEY (user_id) REFERENCES users (id),
+        FOREIGN KEY (book_id) REFERENCES books (id)
+      )
+    `).run();
+    
+    console.log('Database initialized:', dbPath);
+
+    // Ensure there is no hard-coded demo admin account
+    try {
+      db.prepare('DELETE FROM users WHERE email = ?').run('demo@library.com');
+    } catch (e2) { /* ignore */ }
+  } catch (e) {
+    console.error('Database error (continuing without DB):', e.message);
+    // Create mock db for static file serving
+    db = null;
+  }
 }
+
+// Initialize database
+initializeDatabase();
 
 // Middleware
 app.use(express.json());
