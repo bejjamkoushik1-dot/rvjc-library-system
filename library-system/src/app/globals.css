@@ -1,0 +1,268 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  font-family: 'Inter', sans-serif;
+}
+
+/* Navigation */
+.nav {
+  @apply flex justify-between items-center p-4 bg-blue-600 text-white shadow-lg;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.nav-brand {
+  @apply text-xl font-bold hover:text-blue-200 transition-colors;
+  text-decoration: none;
+}
+
+.nav-links {
+  @apply flex gap-4 items-center;
+}
+
+.nav-links a {
+  @apply hover:text-blue-200 transition-colors text-white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.nav-links a:hover {
+  @apply bg-blue-700;
+}
+
+.nav-links button {
+  @apply bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-colors;
+}
+
+/* Container */
+.container {
+  @apply max-w-7xl mx-auto p-4;
+}
+
+/* Buttons */
+.btn {
+  @apply px-4 py-2 rounded font-medium transition-all duration-200 transform hover:scale-105;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+}
+
+.btn-success {
+  @apply bg-green-600 text-white hover:bg-green-700;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white hover:bg-red-700;
+}
+
+/* Forms */
+.form-input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all;
+}
+
+.form-input:focus {
+  @apply shadow-lg;
+}
+
+/* Cards */
+.card {
+  @apply bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow duration-300;
+  border: 1px solid #e5e7eb;
+}
+
+/* Loading Animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Book Grid */
+.book-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+/* Book Card */
+.book-card {
+  @apply card overflow-hidden;
+}
+
+.book-cover {
+  @apply w-full h-48 object-cover rounded-t-xl;
+}
+
+.book-title {
+  @apply font-semibold text-lg mb-2 line-clamp-2;
+}
+
+.book-author {
+  @apply text-gray-600 mb-2;
+}
+
+.book-genre {
+  @apply text-sm text-blue-600 mb-3 font-medium;
+}
+
+.book-availability {
+  @apply flex justify-between items-center mb-4;
+}
+
+.available {
+  @apply text-green-600;
+}
+
+.unavailable {
+  @apply text-red-600;
+}
+
+/* Status Badges */
+.status-badge {
+  @apply px-2 py-1 rounded-full text-xs font-medium;
+}
+
+.status-active {
+  @apply bg-green-100 text-green-800;
+}
+
+.status-returned {
+  @apply bg-gray-100 text-gray-800;
+}
+
+.status-overdue {
+  @apply bg-red-100 text-red-800;
+}
+
+/* Dashboard Stats */
+.stats-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8;
+}
+
+.stat-card {
+  @apply card text-center;
+}
+
+.stat-number {
+  @apply text-2xl font-bold;
+}
+
+.stat-label {
+  @apply text-lg font-medium;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav {
+    @apply flex-col gap-4;
+  }
+  
+  .nav-links {
+    @apply flex-col gap-2 w-full;
+  }
+  
+  .container {
+    @apply px-2;
+  }
+}
+
+/* Search and Filter */
+.search-container {
+  @apply mb-8 flex flex-col md:flex-row gap-4;
+}
+
+.search-input {
+  @apply form-input flex-1;
+}
+
+.filter-select {
+  @apply form-input md:w-48;
+}
+
+/* Empty State */
+.empty-state {
+  @apply text-center py-12;
+}
+
+.empty-icon {
+  @apply mx-auto h-24 w-24 text-gray-400 mb-4;
+}
+
+.empty-title {
+  @apply text-lg font-medium text-gray-900 mb-2;
+}
+
+.empty-description {
+  @apply text-gray-500 mb-6;
+}
+
+/* Reservation Item */
+.reservation-item {
+  @apply card hover:shadow-lg transition-shadow;
+}
+
+.reservation-header {
+  @apply flex flex-col md:flex-row md:items-center md:justify-between;
+}
+
+.reservation-details h3 {
+  @apply text-lg font-semibold mb-2;
+}
+
+.reservation-meta {
+  @apply flex flex-wrap gap-4 text-sm text-gray-500 mb-1;
+}
+
+.reservation-actions {
+  @apply mt-4 md:mt-0 md:ml-4;
+}

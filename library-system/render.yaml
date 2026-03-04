@@ -1,0 +1,17 @@
+services:
+  # Production Next.js service
+  - type: web
+    name: library-system-nextjs
+    env: node
+    plan: free
+    buildCommand: "cd library-system && npm run build"
+    startCommand: "cd library-system && npm start"
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://your-app-name.onrender.com
+
+# Auto-deploy from the library-system directory
+rootDir: /opt/render/project/src/library-system
